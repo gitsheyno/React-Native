@@ -3,8 +3,9 @@ import { theme } from "../theme";
 
 type Props = {
   name: string;
+  isCompleted?: boolean;
 };
-export default function ShoppingListItem({ name }: Props) {
+export default function ShoppingListItem({ name, isCompleted }: Props) {
   const handleDelete = () => {
     Alert.alert(`Delete ${name}`, `Are you sure you want to delete ${name}?`, [
       {
@@ -19,10 +20,28 @@ export default function ShoppingListItem({ name }: Props) {
     ]);
   };
   return (
-    <View style={styles.itemContainer}>
+    <View
+      style={[
+        styles.itemContainer,
+        isCompleted ? styles.completedContainer : undefined,
+      ]}
+    >
       <Text style={styles.itemText}>{name}</Text>
-      <TouchableOpacity style={styles.button} onPress={handleDelete}>
-        <Text style={styles.buttonText}>Delete</Text>
+      <TouchableOpacity
+        style={[
+          styles.button,
+          isCompleted ? styles.completedButton : undefined,
+        ]}
+        onPress={handleDelete}
+      >
+        <Text
+          style={[
+            styles.buttonText,
+            isCompleted ? styles.completedText : undefined,
+          ]}
+        >
+          Delete
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -35,7 +54,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     borderBottomWidth: 1,
-    borderBottomColor: theme.colorCerulian,
+    borderBottomColor: theme.colorCerulean,
     paddingHorizontal: 8,
     paddingVertical: 16,
     flexDirection: "row",
@@ -53,5 +72,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textTransform: "uppercase",
     letterSpacing: 1,
+  },
+  completedContainer: {
+    backgroundColor: theme.colorLightGrey,
+    borderBottomColor: theme.colorLightGrey,
+  },
+  completedText: {
+    color: theme.colorWhite,
+    textDecorationLine: "line-through",
+    textDecorationColor: theme.colorGrey,
+  },
+  completedButton: {
+    backgroundColor: theme.colorGrey,
   },
 });

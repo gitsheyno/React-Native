@@ -4,7 +4,7 @@ import ShoppingListItem from "./components/ShoppingListItem";
 export default function App() {
   return (
     <View style={styles.container}>
-      <ShoppingListItem name="Coffe" />
+      <ShoppingListItem name="Coffe" isCompleted={true} />
       <ShoppingListItem name="Tea" />
       <ShoppingListItem name="Sugar" />
     </View>
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     borderBottomWidth: 1,
-    borderBottomColor: theme.colorCerulian,
+    borderBottomColor: theme.colorCerulean,
     paddingHorizontal: 8,
     paddingVertical: 16,
     flexDirection: "row",
