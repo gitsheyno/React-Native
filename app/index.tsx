@@ -1,4 +1,4 @@
-import { StyleSheet, View, TextInput, ScrollView } from "react-native";
+import { StyleSheet, TextInput, FlatList, View, Text } from "react-native";
 import { theme } from "../theme";
 import ShoppingListItem from "../components/ShoppingListItem";
 import { useState } from "react";
@@ -31,34 +31,37 @@ export default function App() {
     useState<ShoppingListItemType[]>(initialList);
 
   return (
-    <ScrollView
+    <FlatList
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
       stickyHeaderIndices={[0]}
-    >
-      <TextInput
-        value={value}
-        onChangeText={setValue}
-        placeholder="E.g Codde"
-        style={styles.textInput}
-        returnKeyType="done"
-        onSubmitEditing={() => {
-          console.log("Submitted:", value);
-          setShoppingList((prev) => [
-            { id: Date.now().toString(), name: value, isCompleted: false },
-            ...prev,
-          ]);
-          setValue("");
-        }}
-      />
-      {shoppingList.map((item) => (
-        <ShoppingListItem
-          key={item.id}
-          name={item.name}
-          isCompleted={item.isCompleted}
+      data={shoppingList}
+      ListEmptyComponent={
+        <View style={styles.listEmptyContainer}>
+          <Text>Your shopping list is empty</Text>
+        </View>
+      }
+      ListHeaderComponent={
+        <TextInput
+          value={value}
+          onChangeText={setValue}
+          placeholder="E.g Codde"
+          style={styles.textInput}
+          returnKeyType="done"
+          onSubmitEditing={() => {
+            console.log("Submitted:", value);
+            setShoppingList((prev) => [
+              { id: Date.now().toString(), name: value, isCompleted: false },
+              ...prev,
+            ]);
+            setValue("");
+          }}
         />
-      ))}
-    </ScrollView>
+      }
+      renderItem={({ item }) => (
+        <ShoppingListItem name={item.name} isCompleted={item.isCompleted} />
+      )}
+    />
   );
 }
 
@@ -80,5 +83,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderRadius: 8,
     backgroundColor: theme.colorWhite,
+  },
+  listEmptyContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 18,
   },
 });
